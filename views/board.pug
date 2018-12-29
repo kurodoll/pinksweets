@@ -15,6 +15,12 @@ block content
             post_modal_visible = !post_modal_visible;
         }
 
+        $(document).ready(function() {
+            $('.moment').each(function(i, obj) {
+                this.innerHTML = moment(this.innerHTML).fromNow();
+            });
+        });
+
     p.buttons
         | <a href='#' onclick='toggle_post_modal()'>New Post</a>
 
@@ -30,5 +36,5 @@ block content
 
     each p in posts
         div.post
-            p <span class='subdued'>#{p.poster}</span>
+            p <span class='subdued'><b>#{p.poster}</b> @#{p.time_stamp}/<span class='moment'>#{p.time_stamp}</span></span>
             p= p.text
