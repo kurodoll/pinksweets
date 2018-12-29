@@ -62,20 +62,31 @@ function getTimestamp() {
   return new Date(new Date().getTime()).toISOString();
 }
 
+const updateBoards = function(req, res, next) {
+  if (!boards.length) {
+    pg_pool.query('SELECT * FROM boards ORDER BY name ASC;', (err, result) => {
+      if (err) {
+        console.error(err);
+      }
+      else {
+        boards = result.rows;
+      }
+
+      next();
+    });
+  }
+  else {
+    next();
+  }
+}
+
+router.use(updateBoards);
+
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 // *                                                           * // Routing //
 router.get('/', function(req, res, next) {
-  pg_pool.query('SELECT * FROM boards ORDER BY name ASC;', (err, result) => {
-    if (err) {
-      console.error(err);
-    }
-    else {
-      boards = result.rows;
-    }
-
-    res.render('index', { title: website_name, boards: result.rows });
-  });
+  res.render('index', { title: website_name, boards: boards });
 });
 
 router.get('/:board', function(req, res, next) {
