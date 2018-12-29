@@ -78,7 +78,7 @@ const updateBoards = function(req, res, next) {
   else {
     next();
   }
-}
+};
 
 router.use(updateBoards);
 
