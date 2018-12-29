@@ -6,4 +6,15 @@ html
     link(rel='stylesheet' href='/stylesheets/style.css')
 
   body
-    block content
+    div.hibachi
+      img(src='/images/hibachi.jpg' height='102px')
+
+    h1= title
+
+    div.nav
+      p
+        | Boards:
+        | <a href='/'>Home</a>
+
+    div.content
+      block content
