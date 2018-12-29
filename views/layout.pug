@@ -14,7 +14,8 @@ html
     div.nav
       p
         | Boards:
-        | <a href='/'>Home</a>
+        each b in boards
+          | <a href='/#{b.name}'>#{b.name}</a>
 
     div.content
       block content

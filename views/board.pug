@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    each p in posts
+        div.post
+            p <span class='subdued'>#{p.poster}</span>
+            p= p.text
