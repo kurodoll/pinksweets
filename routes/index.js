@@ -66,7 +66,7 @@ function getTimestamp() {
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 // *                                                           * // Routing //
 router.get('/', function(req, res, next) {
-  pg_pool.query('SELECT * FROM boards;', (err, result) => {
+  pg_pool.query('SELECT * FROM boards ORDER BY name ASC;', (err, result) => {
     if (err) {
       console.error(err);
     }
@@ -79,7 +79,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:board', function(req, res, next) {
-  const query = 'SELECT * FROM posts WHERE board = $1;';
+  const query = 'SELECT * FROM posts WHERE board = $1 ORDER BY time_stamp DESC;'; // eslint-disable-line max-len
   const vars = [ req.params.board ];
 
   pg_pool.query(query, vars, (err, result) => {
