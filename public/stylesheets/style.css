@@ -53,7 +53,8 @@ div.new-post-modal {
   border: 1px rgba(50,150,100,0.5) solid;
   display: none;
 }
-div.post {
+div.post,
+div.reply {
   margin: 10px;
   padding: 5px;
   padding-left: 15px;
@@ -68,6 +69,9 @@ div.post pre {
   width: 980px;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+div.reply {
+  margin-left: 100px;
 }
 h1 {
   margin: 0;

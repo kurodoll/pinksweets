@@ -4,12 +4,19 @@ block content
     script.
         let post_modal_visible = false;
 
-        function toggle_post_modal() {
+        function toggle_post_modal(id) {
             if (post_modal_visible) {
                 $('.new-post-modal').css('display', 'none')
             }
             else {
                 $('.new-post-modal').css('display', 'block')
+            }
+
+            if (id) {
+                $('#new-post').attr('action', '/reply/' + id)
+            }
+            else {
+                $('#new-post').attr('action', '/new_post')
             }
 
             post_modal_visible = !post_modal_visible;
@@ -25,7 +32,7 @@ block content
         | <a href='#' onclick='toggle_post_modal()'>New Post</a>
 
     div.new-post-modal
-        form(action='/new_post' method='post')
+        form#new-post(action='/new_post' method='post')
             input(type='hidden' name='board' value=board)
 
             input(type='text' name='username' placeholder='Username (optional)' maxlength='16')
@@ -50,5 +57,26 @@ block content
                                 | <span class='subdued'><b>Anonymous</b>##{p.id}
                             | &nbsp;@#{p.time_stamp}/<span class='moment'>#{p.time_stamp}</span>
                             | </span>
+                            | <a href='#' onclick='toggle_post_modal(#{p.id})'>Reply</a>
 
                         pre= p.text
+
+        each r in replies
+            if r.parent == p.id
+                div.reply
+                    table
+                        tr
+                            td.image
+                                a(href=r.image_url)
+                                    img(src=r.image_url)
+
+                            td.post
+                                p
+                                    if r.poster
+                                        | <b>#{r.poster}</b><span class='subdued'>##{r.id}
+                                    else
+                                        | <span class='subdued'><b>Anonymous</b>##{r.id}
+                                    | &nbsp;@#{r.time_stamp}/<span class='moment'>#{r.time_stamp}</span>
+                                    | </span>
+
+                                pre= r.text

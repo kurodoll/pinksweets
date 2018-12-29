@@ -98,11 +98,25 @@ router.get('/:board', function(req, res, next) {
       console.error(err);
     }
 
-    res.render('board', {
-      title: req.params.board + ' - ' + website_name,
-      boards: boards,
-      board: req.params.board,
-      posts: result.rows });
+    const post_ids = [];
+    for (let i = 0; i < result.rows.length; i++) {
+      post_ids.push(result.rows[i].id);
+    }
+
+    const query2 = 'SELECT * FROM replies WHERE parent IN (' + post_ids.toString() + ');'; // eslint-disable-line max-len
+
+    pg_pool.query(query2, (err2, result2) => {
+      if (err2) {
+        console.error(err2);
+      }
+
+      res.render('board', {
+        title: req.params.board + ' - ' + website_name,
+        boards: boards,
+        board: req.params.board,
+        posts: result.rows,
+        replies: result2.rows });
+    });
   });
 });
 
@@ -114,6 +128,29 @@ router.post('/new_post', function(req, res, next) {
     const query = 'INSERT INTO posts (board, poster, text, image_url, time_stamp) VALUES ($1, $2, $3, $4, $5);'; // eslint-disable-line max-len
     const vars = [
       req.body.board,
+      req.body.username || null,
+      req.body.text,
+      req.body.image_url || null,
+      getTimestamp() ];
+
+    pg_pool.query(query, vars, (err, result) => {
+      if (err) {
+        console.error(err);
+      }
+
+      res.redirect('/' + req.body.board);
+    });
+  }
+});
+
+router.post('/reply/:id', function(req, res, next) {
+  if (!req.body.text) {
+    res.redirect('/' + req.body.board);
+  }
+  else {
+    const query = 'INSERT INTO replies (parent, poster, text, image_url, time_stamp) VALUES ($1, $2, $3, $4, $5);'; // eslint-disable-line max-len
+    const vars = [
+      req.params.id,
       req.body.username || null,
       req.body.text,
       req.body.image_url || null,
