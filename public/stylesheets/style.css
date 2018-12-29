@@ -105,6 +105,9 @@ a {
 a:hover {
   text-decoration: underline;
 }
+.highlight {
+  color: #64e1e1;
+}
 .subdued {
   color: #808080;
 }

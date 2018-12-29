@@ -125,10 +125,11 @@ router.post('/new_post', function(req, res, next) {
     res.redirect('/' + req.body.board);
   }
   else {
-    const query = 'INSERT INTO posts (board, poster, text, image_url, time_stamp) VALUES ($1, $2, $3, $4, $5);'; // eslint-disable-line max-len
+    const query = 'INSERT INTO posts (board, poster, title, text, image_url, time_stamp) VALUES ($1, $2, $3, $4, $5, $6);'; // eslint-disable-line max-len
     const vars = [
       req.body.board,
       req.body.username || null,
+      req.body.title || null,
       req.body.text,
       req.body.image_url || null,
       getTimestamp() ];
