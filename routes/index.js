@@ -57,6 +57,13 @@ pg_pool.on('error', function(err, client) {
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// *                                                 * // General Functions //
+function getTimestamp() {
+  return new Date(new Date().getTime()).toISOString();
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 // *                                                           * // Routing //
 router.get('/', function(req, res, next) {
   pg_pool.query('SELECT * FROM boards;', (err, result) => {
@@ -83,8 +90,32 @@ router.get('/:board', function(req, res, next) {
     res.render('board', {
       title: req.params.board + ' - ' + website_name,
       boards: boards,
+      board: req.params.board,
       posts: result.rows });
   });
+});
+
+router.post('/new_post', function(req, res, next) {
+  if (!req.body.text) {
+    res.redirect('/' + req.body.board);
+  }
+  else {
+    const query = 'INSERT INTO posts (board, poster, text, image_url, time_stamp) VALUES ($1, $2, $3, $4, $5);'; // eslint-disable-line max-len
+    const vars = [
+      req.body.board,
+      req.body.username || null,
+      req.body.text,
+      req.body.image_url || null,
+      getTimestamp() ];
+
+    pg_pool.query(query, vars, (err, result) => {
+      if (err) {
+        console.error(err);
+      }
+
+      res.redirect('/' + req.body.board);
+    });
+  }
 });
 
 module.exports = router;

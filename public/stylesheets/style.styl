@@ -50,6 +50,19 @@ div.center
     padding-top 20px
     padding-bottom 20px
 
+div.new-post-modal
+    position absolute
+    top 11px
+    left 73px
+
+    width 500px
+    height 477px
+
+    background alpha(black, 50%)
+    border 1px rgba(50,150,100,.5) solid
+
+    display none
+
 div.post
     margin 10px
     padding 5px
@@ -76,6 +89,19 @@ p
     font 8pt Verdana
     color rgb(200,200,200)
 
+p.buttons
+    margin-top 11px
+    margin-left 5px
+    padding 5px
+
+p.buttons a
+    padding 5px
+    background alpha(pink, 10%)
+
+p.buttons a:hover
+    text-decoration none
+    background rgba(50,150,100,.5)
+
 a
     color pink
     text-decoration none
@@ -85,3 +111,34 @@ a:hover
 
 .subdued
     color grey
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// *                                                             * // Forms //
+input[type='text'], input[type='submit'], textarea
+    margin 5px
+    margin-bottom 0
+
+    padding 5px
+    width 480px
+
+    background rgba(50,150,100,.2)
+    border none
+
+    color white
+    font 8pt Verdana
+
+input[type='submit']
+    width 100px
+
+    border 1px rgba(50,150,100,.5) dashed
+    border-top 1px transparent solid
+
+input[type='submit']:hover
+    background rgba(250,150,50,.2)
+    border-bottom 1px rgb(250,150,50) solid
+
+    cursor pointer
+
+textarea
+    height 400px

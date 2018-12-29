@@ -1,6 +1,33 @@
 extends layout
 
 block content
+    script.
+        let post_modal_visible = false;
+
+        function toggle_post_modal() {
+            if (post_modal_visible) {
+                $('.new-post-modal').css('display', 'none')
+            }
+            else {
+                $('.new-post-modal').css('display', 'block')
+            }
+
+            post_modal_visible = !post_modal_visible;
+        }
+
+    p.buttons
+        | <a href='#' onclick='toggle_post_modal()'>New Post</a>
+
+    div.new-post-modal
+        form(action='/new_post' method='post')
+            input(type='hidden' name='board' value=board)
+
+            input(type='text' name='username' placeholder='Username (optional)' maxlength='16')
+            textarea(name='text' placeholder='Post content' maxlength='1000')
+            input(type='text' name='image_url' placeholder='Image URL (optional)' maxlength='100')
+
+            input(type='submit' value='Post')
+
     each p in posts
         div.post
             p <span class='subdued'>#{p.poster}</span>

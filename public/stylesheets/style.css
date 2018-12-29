@@ -43,6 +43,16 @@ div.center {
   padding-top: 20px;
   padding-bottom: 20px;
 }
+div.new-post-modal {
+  position: absolute;
+  top: 11px;
+  left: 73px;
+  width: 500px;
+  height: 477px;
+  background: rgba(0,0,0,0.5);
+  border: 1px rgba(50,150,100,0.5) solid;
+  display: none;
+}
 div.post {
   margin: 10px;
   padding: 5px;
@@ -62,6 +72,19 @@ p {
   font: 8pt Verdana;
   color: #c8c8c8;
 }
+p.buttons {
+  margin-top: 11px;
+  margin-left: 5px;
+  padding: 5px;
+}
+p.buttons a {
+  padding: 5px;
+  background: rgba(255,192,203,0.1);
+}
+p.buttons a:hover {
+  text-decoration: none;
+  background: rgba(50,150,100,0.5);
+}
 a {
   color: #ffc0cb;
   text-decoration: none;
@@ -71,4 +94,29 @@ a:hover {
 }
 .subdued {
   color: #808080;
+}
+input[type='text'],
+input[type='submit'],
+textarea {
+  margin: 5px;
+  margin-bottom: 0;
+  padding: 5px;
+  width: 480px;
+  background: rgba(50,150,100,0.2);
+  border: none;
+  color: #fff;
+  font: 8pt Verdana;
+}
+input[type='submit'] {
+  width: 100px;
+  border: 1px rgba(50,150,100,0.5) dashed;
+  border-top: 1px transparent solid;
+}
+input[type='submit']:hover {
+  background: rgba(250,150,50,0.2);
+  border-bottom: 1px #fa9632 solid;
+  cursor: pointer;
+}
+textarea {
+  height: 400px;
 }
