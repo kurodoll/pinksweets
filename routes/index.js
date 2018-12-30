@@ -103,7 +103,17 @@ router.get('/:board', function(req, res, next) {
       post_ids.push(result.rows[i].id);
     }
 
-    const query2 = 'SELECT * FROM replies WHERE parent IN (' + post_ids.toString() + ');'; // eslint-disable-line max-len
+    let query2 = '';
+
+    if (post_ids.length > 1) {
+      query2 = 'SELECT * FROM replies WHERE parent IN (' + post_ids.toString() + ');'; // eslint-disable-line max-len
+    }
+    else if (post_ids.length == 1) {
+      query2 = 'SELECT * FROM replies WHERE parent = ' + post_ids[0] + ';';
+    }
+    else {
+      query2 = 'SELECT * FROM replies;'; // eslint-disable-line max-len
+    }
 
     pg_pool.query(query2, (err2, result2) => {
       if (err2) {
