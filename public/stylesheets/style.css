@@ -63,7 +63,8 @@ div.reply {
   border-left: 1px rgba(50,150,100,0.5) dashed;
 }
 div.post img {
-  height: 200px;
+  height: 250px;
+  margin-right: 10px;
 }
 div.post pre {
   width: 980px;
