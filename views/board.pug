@@ -55,7 +55,8 @@ block content
 
     div.new-post-modal#new-post-modal
         form#new-post(action='/new_post' method='post')
-            input(type='hidden' name='board' value=board)
+            label Posting to board:
+            input.inline(type='text' name='board' value=board)
 
             input(type='text' name='username' placeholder='Username (optional)' maxlength='16')
             input(type='text' name='title' placeholder='Post title (optional)' maxlength='50')

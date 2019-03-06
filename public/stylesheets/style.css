@@ -48,7 +48,7 @@ div.new-post-modal {
   top: 11px;
   left: 73px;
   width: 500px;
-  height: 535px;
+  height: 563px;
   background: rgba(0,0,0,0.9);
   border: 1px rgba(50,150,100,0.5) solid;
   display: none;
@@ -84,7 +84,8 @@ h1 {
   color: #ffc0cb;
 }
 p,
-pre {
+pre,
+label {
   margin: 0;
   font: 8pt Verdana;
   color: #c8c8c8;
@@ -101,6 +102,9 @@ p.buttons a {
 p.buttons a:hover {
   text-decoration: none;
   background: rgba(50,150,100,0.5);
+}
+label {
+  margin-left: 10px;
 }
 a {
   color: #ffc0cb;
@@ -153,6 +157,9 @@ input[type='submit']:hover {
   background: rgba(250,150,50,0.2);
   border: 1px #fa9632 solid;
   cursor: pointer;
+}
+input.inline {
+  width: auto;
 }
 textarea {
   height: 400px;
