@@ -195,7 +195,7 @@ router.post('/new_post', function(req, res, next) {
 });
 
 router.post('/reply/:id', function(req, res, next) {
-  if (!req.body.text) {
+  if (!req.body.text && !req.body.image_url) {
     res.redirect('/' + req.body.board);
   }
   else {
@@ -225,7 +225,9 @@ router.post('/reply/:id', function(req, res, next) {
         }
       }
 
-      addChild(parents, result.rows[0].id);
+      if (parents.length) {
+        addChild(parents, result.rows[0].id);
+      }
     });
   }
 });
