@@ -172,7 +172,7 @@ router.post('/reply/:id', function(req, res, next) {
         console.error(err);
       }
 
-      res.redirect('/' + req.body.board);
+      res.redirect('/post/' + req.params.id.toString());
     });
   }
 });
