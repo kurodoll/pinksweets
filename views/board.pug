@@ -10,6 +10,7 @@ block content
             }
             else {
                 $('.new-post-modal').css('display', 'block')
+                document.getElementById('new-post-modal').scrollIntoView();
             }
 
             if (id) {
@@ -52,7 +53,7 @@ block content
     p.buttons
         | <a href='#' onclick='toggle_post_modal()'>New Post</a>
 
-    div.new-post-modal
+    div.new-post-modal#new-post-modal
         form#new-post(action='/new_post' method='post')
             input(type='hidden' name='board' value=board)
 
