@@ -46,9 +46,10 @@ block content
         div.post
             table
                 tr
-                    td.image
-                        a(href=p.image_url)
-                            img(src=p.image_url)
+                    if p.image_url
+                        td.image
+                            a(href=p.image_url)
+                                img(src=p.image_url)
 
                     td.post
                         p
