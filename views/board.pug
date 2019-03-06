@@ -4,7 +4,7 @@ block content
     script.
         let post_modal_visible = false;
 
-        function toggle_post_modal(id) {
+        function toggle_post_modal(id, reply_id=null) {
             if (post_modal_visible) {
                 $('.new-post-modal').css('display', 'none')
             }
@@ -19,6 +19,10 @@ block content
                 $('#new-post').attr('action', '/new_post')
             }
 
+            if (reply_id) {
+                $('#new-post-content').val('>' + reply_id.toString() + '\n');
+            }
+
             post_modal_visible = !post_modal_visible;
         }
 
@@ -26,7 +30,22 @@ block content
             $('.moment').each(function(i, obj) {
                 this.innerHTML = moment(this.innerHTML).fromNow();
             });
+
+            $('.post-content').each(function(i, obj) {
+                if (this.innerHTML.includes('&gt;')) {
+                    let split_up = this.innerHTML.split('\n');
+
+                    for (let i = 0; i < split_up.length; i++) {
+                        if (split_up[i].includes('&gt;')) {
+                            split_up[i] = "<a href='/reply/" + parseInt(split_up[i].slice(4), 10) + "'>" + split_up[i] + '</a>';
+                        }
+                    }
+
+                    this.innerHTML = split_up.join('\n');
+                }
+            });
         });
+
 
     p.buttons
         | <a href='#' onclick='toggle_post_modal()'>New Post</a>
@@ -37,7 +56,7 @@ block content
 
             input(type='text' name='username' placeholder='Username (optional)' maxlength='16')
             input(type='text' name='title' placeholder='Post title (optional)' maxlength='50')
-            textarea(name='text' placeholder='Post content' maxlength='1000')
+            textarea#new-post-content(name='text' placeholder='Post content' maxlength='1000')
             input(type='text' name='image_url' placeholder='Image URL (optional)' maxlength='100')
 
             input(type='submit' value='Post')
@@ -63,7 +82,7 @@ block content
                             | </span>
                             | <a href='#' onclick='toggle_post_modal(#{p.id})'>Reply</a>
 
-                        pre= p.text.trim()
+                        pre.post-content= p.text.trim()
 
         each r in replies
             if r.parent == p.id
@@ -83,5 +102,6 @@ block content
                                         | <span class='subdued'><b>Anonymous</b>##{r.id}
                                     | &nbsp;@#{r.time_stamp}/<span class='moment'>#{r.time_stamp}</span>
                                     | </span>
+                                    | <a href='#' onclick='toggle_post_modal(#{p.id}, #{r.id})'>Reply</a>
 
-                                pre= r.text.trim()
+                                pre.post-content= r.text.trim()
