@@ -83,8 +83,10 @@ block content
                                 | <span class='subdued'><b>Anonymous</b>##{p.id}
                             | &nbsp;@#{p.time_stamp}/<span class='moment'>#{p.time_stamp}</span>
                             | </span>
+                            | <span class='small highlight-bg'>
                             | <a href='#' onclick='toggle_post_modal(#{p.id})'>Reply</a>,
                             | <a class='subdued' href='/post/#{p.id}'>Permalink</a>
+                            | </span>
 
                         pre.post-content= p.text.trim()
 
@@ -106,13 +108,15 @@ block content
                                         | <span class='subdued'><b>Anonymous</b>##{r.id}
                                     | &nbsp;@#{r.time_stamp}/<span class='moment'>#{r.time_stamp}</span>
                                     | </span>
+                                    | <span class='small highlight-bg'>
                                     | <a href='#' onclick='toggle_post_modal(#{p.id}, #{r.id})'>Reply</a>,
                                     | <a class='subdued' href='/reply/#{r.id}'>Permalink</a>
                                     if r.children
-                                        | <span class='small'>&nbsp;| Replies: [&nbsp;
+                                        | &nbsp;| Replies: [&nbsp;
                                         each c in JSON.parse(r.children)
                                             | <a href='/reply/#{c}'>#{c}</a>&nbsp;
-                                        | ]</span>
+                                        | ]
+                                    | </span>
 
                                 pre.post-content= r.text.trim()
 

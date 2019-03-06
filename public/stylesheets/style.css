@@ -112,6 +112,10 @@ a:hover {
 .highlight {
   color: #64e1e1;
 }
+.highlight-bg {
+  padding: 3px;
+  background: rgba(50,150,100,0.1);
+}
 .subdued {
   color: #808080;
 }
