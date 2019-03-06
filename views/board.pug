@@ -80,8 +80,8 @@ block content
                                 | <span class='subdued'><b>Anonymous</b>##{p.id}
                             | &nbsp;@#{p.time_stamp}/<span class='moment'>#{p.time_stamp}</span>
                             | </span>
-                            | <a href='#' onclick='toggle_post_modal(#{p.id})'>Reply</a> |
-                            | <a href='/post/#{p.id}'>Permalink</a>
+                            | <a href='#' onclick='toggle_post_modal(#{p.id})'>Reply</a>,
+                            | <a class='subdued' href='/post/#{p.id}'>Permalink</a>
 
                         pre.post-content= p.text.trim()
 
@@ -103,7 +103,8 @@ block content
                                         | <span class='subdued'><b>Anonymous</b>##{r.id}
                                     | &nbsp;@#{r.time_stamp}/<span class='moment'>#{r.time_stamp}</span>
                                     | </span>
-                                    | <a href='#' onclick='toggle_post_modal(#{p.id}, #{r.id})'>Reply</a>
+                                    | <a href='#' onclick='toggle_post_modal(#{p.id}, #{r.id})'>Reply</a>,
+                                    | <a class='subdued' href='/reply/#{r.id}'>Permalink</a>
 
                                 pre.post-content= r.text.trim()
 
