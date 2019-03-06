@@ -177,4 +177,44 @@ router.post('/reply/:id', function(req, res, next) {
   }
 });
 
+router.get('/reply/:id', function(req, res, next) {
+  const query = 'SELECT * FROM replies WHERE id = $1;';
+  const vars = [ req.params.id ];
+
+  pg_pool.query(query, vars, (err, result) => {
+    if (err) {
+      console.error(err);
+    }
+
+    post_id = result.rows[0].parent;
+    res.redirect('/post/' + post_id.toString() + '?h=' + req.params.id);
+  });
+});
+
+router.get('/post/:id', function(req, res, next) {
+  const query = 'SELECT * FROM posts WHERE id = $1;';
+  const vars = [ req.params.id ];
+
+  pg_pool.query(query, vars, (err, result) => {
+    if (err) {
+      console.error(err);
+    }
+
+    query2 = 'SELECT * FROM replies WHERE parent = ' + req.params.id + ';';
+
+    pg_pool.query(query2, (err2, result2) => {
+      if (err2) {
+        console.error(err2);
+      }
+
+      res.render('board', {
+        title: website_name,
+        boards: boards,
+        posts: result.rows,
+        replies: result2.rows,
+        highlight: req.query.h });
+    });
+  });
+});
+
 module.exports = router;

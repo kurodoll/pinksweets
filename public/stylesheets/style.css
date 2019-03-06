@@ -73,6 +73,10 @@ div.post pre {
 div.reply {
   margin-left: 100px;
 }
+div.highlight {
+  background: #0a1e19;
+  border: 1px #287864 solid;
+}
 h1 {
   margin: 0;
   float: right;
