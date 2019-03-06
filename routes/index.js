@@ -84,6 +84,46 @@ router.use(updateBoards);
 
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+// *                                                  * // Helper Functions //
+function addChild(parent_ids, reply_id) {
+  for (let i = 0; i < parent_ids.length; i++) {
+    const parent_id = parent_ids[i];
+
+    const query = 'SELECT children FROM replies WHERE id = $1;';
+    const vars = [ parent_id ];
+
+    pg_pool.query(query, vars, (err, result) => {
+      if (err) {
+        console.error(err);
+      }
+      else {
+        let children;
+
+        if (result.rows[0].children) {
+          children = JSON.parse(result.rows[0].children);
+          children.push(reply_id);
+        }
+        else {
+          children = [ reply_id ];
+        }
+
+        const query2 = 'UPDATE replies SET children = $1 WHERE id = $2';
+        const vars2 = [
+          JSON.stringify(children),
+          parent_id ];
+
+        pg_pool.query(query2, vars2, (err, result) => {
+          if (err) {
+            console.error(err);
+          }
+        });
+      }
+    });
+  }
+}
+
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 // *                                                           * // Routing //
 router.get('/', function(req, res, next) {
   res.render('index', { title: website_name, boards: boards });
@@ -106,13 +146,13 @@ router.get('/:board', function(req, res, next) {
     let query2 = '';
 
     if (post_ids.length > 1) {
-      query2 = 'SELECT * FROM replies WHERE parent IN (' + post_ids.toString() + ');'; // eslint-disable-line max-len
+      query2 = 'SELECT * FROM replies WHERE parent IN (' + post_ids.toString() + ') ORDER BY id ASC;'; // eslint-disable-line max-len
     }
     else if (post_ids.length == 1) {
-      query2 = 'SELECT * FROM replies WHERE parent = ' + post_ids[0] + ';';
+      query2 = 'SELECT * FROM replies WHERE parent = ' + post_ids[0] + ' ORDER BY id ASC;'; // eslint-disable-line max-len
     }
     else {
-      query2 = 'SELECT * FROM replies;'; // eslint-disable-line max-len
+      query2 = 'SELECT * FROM replies;';
     }
 
     pg_pool.query(query2, (err2, result2) => {
@@ -159,7 +199,7 @@ router.post('/reply/:id', function(req, res, next) {
     res.redirect('/' + req.body.board);
   }
   else {
-    const query = 'INSERT INTO replies (parent, poster, text, image_url, time_stamp) VALUES ($1, $2, $3, $4, $5);'; // eslint-disable-line max-len
+    const query = 'INSERT INTO replies (parent, poster, text, image_url, time_stamp) VALUES ($1, $2, $3, $4, $5) RETURNING id;'; // eslint-disable-line max-len
     const vars = [
       req.params.id,
       req.body.username || null,
@@ -173,6 +213,19 @@ router.post('/reply/:id', function(req, res, next) {
       }
 
       res.redirect('/post/' + req.params.id.toString());
+
+      // Find what comments this reply is replying to,
+      // so that their children can be updated
+      const parents = [];
+      const split_up = req.body.text.split('\n');
+
+      for (let i = 0; i < split_up.length; i++) {
+        if (split_up[i].includes('>')) {
+          parents.push(parseInt(split_up[i].slice(1), 10));
+        }
+      }
+
+      addChild(parents, result.rows[0].id);
     });
   }
 });
@@ -200,7 +253,7 @@ router.get('/post/:id', function(req, res, next) {
       console.error(err);
     }
 
-    query2 = 'SELECT * FROM replies WHERE parent = ' + req.params.id + ';';
+    query2 = 'SELECT * FROM replies WHERE parent = ' + req.params.id + ' ORDER BY id ASC;'; // eslint-disable-line max-len
 
     pg_pool.query(query2, (err2, result2) => {
       if (err2) {

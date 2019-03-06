@@ -44,6 +44,8 @@ block content
                     this.innerHTML = split_up.join('\n');
                 }
             });
+
+            document.getElementById('highlighted-reply').scrollIntoView();
         });
 
 
@@ -105,11 +107,16 @@ block content
                                     | </span>
                                     | <a href='#' onclick='toggle_post_modal(#{p.id}, #{r.id})'>Reply</a>,
                                     | <a class='subdued' href='/reply/#{r.id}'>Permalink</a>
+                                    if r.children
+                                        | <span class='small'>&nbsp;| Replies: [&nbsp;
+                                        each c in JSON.parse(r.children)
+                                            | <a href='/reply/#{c}'>#{c}</a>&nbsp;
+                                        | ]</span>
 
                                 pre.post-content= r.text.trim()
 
                 if r.id == highlight
-                    div.reply.highlight
+                    div.reply.highlight#highlighted-reply
                         +reply_code
 
                 else

@@ -115,6 +115,9 @@ a:hover {
 .subdued {
   color: #808080;
 }
+.small {
+  font-size: 7pt;
+}
 table {
   border-collapse: collapse;
 }
