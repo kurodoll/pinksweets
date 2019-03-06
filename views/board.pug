@@ -63,16 +63,17 @@ block content
                             | </span>
                             | <a href='#' onclick='toggle_post_modal(#{p.id})'>Reply</a>
 
-                        pre= p.text
+                        pre= p.text.trim()
 
         each r in replies
             if r.parent == p.id
                 div.reply
                     table
                         tr
-                            td.image
-                                a(href=r.image_url)
-                                    img(src=r.image_url)
+                            if r.image_url
+                                td.image
+                                    a(href=r.image_url)
+                                        img(src=r.image_url)
 
                             td.post
                                 p
@@ -83,4 +84,4 @@ block content
                                     | &nbsp;@#{r.time_stamp}/<span class='moment'>#{r.time_stamp}</span>
                                     | </span>
 
-                                pre= r.text
+                                pre= r.text.trim()
